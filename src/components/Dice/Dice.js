@@ -1,4 +1,5 @@
 import React from 'react';
+import './Dice.css';
 
 const Dice = ({ value = '?' }) => {
   const isValidDiceNumber = value => parseInt(value, 10) <= 6 && parseInt(value, 10) >= 1;
