@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import DiceWithAnimations from '../Dice/DiceWithAnimations.js';
 import './Fighter.css';
 import { ReactComponent as HealthSvg } from './Health.svg';
@@ -12,7 +12,7 @@ const getTotalAttackValue = (hasGameStarted, attack) => hasGameStarted ? attack.
 
 const getClassName = position => `c-fighter__attributes c-fighter__attributes__${position}`;
 
-const getSvgStyle = (initialHealth, currentHealth) => {
+const getHealthSvgStyle = (initialHealth, currentHealth) => {
   const radius = 52;
   const circumference = radius * 2 * Math.PI;
 
@@ -54,6 +54,12 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
           duration: 600,
           opacity: [1, 0],
           translateY: [0, -30],
+          begin: () => {
+            const healthStyle = getHealthSvgStyle(initialHealth, currentHealth);
+
+            healthRef.current.style.strokeDasharray = healthStyle.strokeDasharray;
+            healthRef.current.style.strokeDashoffset = healthStyle.strokeDashoffset;
+          },
         });
     };
 
@@ -62,12 +68,13 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
     }
 
   });
+  const healthRef = useRef();
 
   return <section className={`c-fighter ${className} component-wrapper`}>
     <div className='dmg-taken'>{getDmgTaken(dmg)}</div>
     <div className={getClassName(position)}>
       <div className='c-fighter__health-avatar-wrapper'>
-        <HealthSvg style={getSvgStyle(initialHealth, currentHealth)} className='c-fighter-health-svg' tabIndex='0' />
+        <HealthSvg ref={healthRef} className='c-fighter-health-svg' tabIndex='0' />
         <div className='c-fighter__avatar'>{getAvatar(type)}</div>
       </div>
       <div className='c-fighter__die-wrapper'>
