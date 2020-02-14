@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Fighter from '../Fighter/Fighter';
+import Fighter from '../Fighter/Fighter.js';
+import {Draw} from '../Draw/Draw.js';
 import './Game.css';
 
 const initialHealth = 12;
@@ -25,6 +26,7 @@ function getDmgResults({ monster, character }) {
     character: Math.max(monsterAttack - characterAttack, 0),
   };
 };
+
 
 const Game = () => {
   const [state, setState] = useState(initialState);
@@ -54,8 +56,11 @@ const Game = () => {
 
   return <section className='c-game'>
     <div className='c-game__actions'>{renderAttackButton()}</div>
-    <Fighter type='character' currentHealth={getCurrentHealth(state, 'character')} attack={getAttack(state, 'character')}/>
-    <Fighter type='monster' currentHealth={getCurrentHealth(state, 'monster')} attack={getAttack(state, 'monster')}/>
+    <section className='b-fighters'>
+      <Fighter type='character' currentHealth={getCurrentHealth(state, 'character')} attack={getAttack(state, 'character')} />
+      <Draw isDraw={true} />
+      <Fighter type='monster' currentHealth={getCurrentHealth(state, 'monster')} attack={getAttack(state, 'monster')} />
+    </section>
   </section>
 };
 
