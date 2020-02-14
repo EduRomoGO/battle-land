@@ -38,7 +38,7 @@ const getSvgStyle = (initialHealth, currentHealth) => {
   };
 };
 
-const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position }) => {
+const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position, animationDelay }) => {
   useEffect(() => {
     const animateDmg = () => {
       anime.timeline()
@@ -47,7 +47,7 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
           duration: 600,
           opacity: [0, 1],
           translateY: [30, 0],
-        }, 1800)
+        }, animationDelay)
         .add({
           targets: '.dmg-taken',
           duration: 600,
@@ -60,7 +60,7 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
       animateDmg();
     }
 
-  }, [dmg]);
+  });
 
   return <section className={`c-fighter ${className} component-wrapper`}>
     <div className='dmg-taken'>{getDmgTaken(dmg)}</div>

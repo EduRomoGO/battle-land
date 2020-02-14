@@ -4,7 +4,7 @@ import { DrawWithAnimation } from '../Draw/Draw.js';
 import './Game.css';
 import anime from 'animejs/lib/anime.es.js';
 
-const initialHealth = 1;
+const initialHealth = 12;
 const initialState = {
   monster: { health: initialHealth, attack: undefined },
   character: { health: initialHealth, attack: undefined },
@@ -45,6 +45,7 @@ const determineAttacker = ({ monster, character }) => {
 
 const getFighterPosition = type => type === 'character' ? 'left' : 'right';
 
+const animationDelay = 1800;
 
 const Game = () => {
   const [state, setState] = useState(initialState);
@@ -96,7 +97,7 @@ const Game = () => {
             opacity: 1,
             duration: 500,
             // elasticity: 100,
-          }, 1800)
+          }, animationDelay)
           .add({
             targets: attackerClass,
             translateX: getRetreatMovementValues(getFighterPosition(attacker)),
@@ -164,7 +165,7 @@ const Game = () => {
   };
 
   const renderFighter = type => {
-    return <Fighter className={`c-fighter-${type}`} type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} />;
+    return <Fighter className={`c-fighter-${type}`} type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} animationDelay={animationDelay} />;
   };
 
   const resetGameStatus = () => {
