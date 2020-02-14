@@ -59,28 +59,43 @@ const Game = () => {
       const attackerClass = `.c-fighter-${attacker}`;
       const attackerNode = document.querySelector(attackerClass);
 
-      const getDistance = attacker => {
+      const getDistanceFromSide = ({left: nodeLeft, right: nodeRight, movingNodePosition}) => {
         let distance;
-        const damaged = attacker === 'monster' ? 'character' : 'monster';
-        const damagedClass = `.c-fighter-${damaged}`;
-        const damagedNode = document.querySelector(damagedClass);
 
-        if (attacker === 'character') {
-          distance = damagedNode.offsetLeft - damagedNode.offsetWidth - attackerNode.offsetLeft;
+        if (movingNodePosition === 'right') {
+          distance = nodeRight.offsetLeft - nodeRight.offsetWidth - nodeLeft.offsetLeft;
         } else {
-          distance = attackerNode.offsetLeft - damagedNode.offsetWidth - damagedNode.offsetLeft;
+          distance = nodeRight.offsetLeft - nodeLeft.offsetWidth - nodeLeft.offsetLeft
         }
 
         return distance;
-      };
+      }
 
       const animateAttacker = attacker => {
-        const distance = getDistance(attacker);
 
-        const getAttackDirection = () => {
+        // const fighterInfoMap = {
+        //   monster: {
+        //     node: document.querySelector('.c-fighter-monster'),
+        //     position: getFighterPosition('monster'),
+        //   },
+        //   character: {
+        //     node: document.querySelector('.c-fighter-character'),
+        //     position: getFighterPosition('character'),
+        //   },
+        // };
+
+        const positionNodeMap = {
+          [getFighterPosition('character')] : document.querySelector('.c-fighter-character'),
+          [getFighterPosition('monster')] : document.querySelector('.c-fighter-monster'),
+        }
+
+
+        const distance = getDistanceFromSide({...positionNodeMap, movingNodePosition: getFighterPosition(attacker)});
+
+        const getAttackMovementValues = () => {
           return attacker === 'monster' ? [0, -distance] : [0, distance];
         };
-        const getRetreatDirection = () => {
+        const getRetreatMovementValues = () => {
           return attacker === 'monster' ? [-distance, 0] : [distance, 0];
         };
 
@@ -91,14 +106,14 @@ const Game = () => {
         return anime.timeline()
           .add({
             targets: attackerClass,
-            translateX: getAttackDirection(),
+            translateX: getAttackMovementValues(),
             opacity: 1,
             duration: 500,
             // elasticity: 100,
           }, 1800)
           .add({
             targets: attackerClass,
-            translateX: getRetreatDirection(),
+            translateX: getRetreatMovementValues(),
             opacity: 1,
             duration: 500,
             complete: () => {
