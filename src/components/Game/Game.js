@@ -9,9 +9,8 @@ const initialState = {
   character: { health: initialHealth, attack: undefined },
 };
 
-const drawDice = [1];
-const dice = drawDice;
-// const dice = [1, 2, 3, 4, 5, 6];
+// const dice = [1];
+const dice = [1, 2, 3, 4, 5, 6];
 const getDiceFace = () => Math.floor(Math.random() * dice.length) + 1;
 
 const getCurrentHealth = (state, type) => state[type].health;
@@ -19,7 +18,7 @@ const getAttack = (state, type) => state[type].attack;
 
 const getAttackPoints = fighter => fighter.attack && fighter.attack.reduce((acc, next) => acc + next, 0);
 
-function getDmgResults({ monster, character }) {
+const getDmgResults = ({ monster, character }) => {
   const monsterAttack = getAttackPoints(monster);
   const characterAttack = getAttackPoints(character);
 
@@ -33,6 +32,7 @@ const hasGameStarted = ({monster, character}) => monster.attack && character.att
 
 const isAttackDraw = ({ monster, character }) => getAttackPoints(monster) === getAttackPoints(character);
 
+const getDamageFor = (state, fighter) => getDmgResults(state)[fighter];
 
 const Game = () => {
   const [state, setState] = useState(initialState);
@@ -60,12 +60,16 @@ const Game = () => {
     return <button className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
   };
 
+  const renderFighter = type => {
+    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} />;
+  };
+
   return <section className='c-game'>
     <div className='c-game__actions'>{renderAttackButton()}</div>
     <section className='b-fighters'>
-      <Fighter type='character' currentHealth={getCurrentHealth(state, 'character')} attack={getAttack(state, 'character')} />
+      {renderFighter('character')}
       <DrawWithAnimation hasGameStarted={hasGameStarted(state)} isDraw={isAttackDraw(state)} />
-      <Fighter type='monster' currentHealth={getCurrentHealth(state, 'monster')} attack={getAttack(state, 'monster')} />
+      {renderFighter('monster')}
     </section>
   </section>
 };

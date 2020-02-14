@@ -2,11 +2,15 @@ import React from 'react';
 import Dice from '../Dice/Dice';
 import './Fighter.css';
 
-const Fighter = ({ type, currentHealth, attack = [undefined, undefined] }) => {
+const getAvatar = type => type === 'monster' ? '🧟‍♂️' : '🧙‍♂️';
 
-  const getAvatar = type => type === 'monster' ? '🧟‍♂️' : '🧙‍♂️';
+const getDmgTaken = dmg => dmg ? `- ${dmg}` : '';
 
+
+const Fighter = ({ type, currentHealth, dmg, attack = [undefined, undefined] }) => {
   return <section className='c-fighter'>
+    <div className='dmg-taken'>{getDmgTaken(dmg)}</div>
+
     <div className='c-fighter__dice-wrapper'>
       {attack.map((value, id) => <Dice key={id} value={value} />)}
     </div>
