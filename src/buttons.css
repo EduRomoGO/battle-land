@@ -77,7 +77,7 @@
 }
 
 .button--sun {
-  color: #f15c5c;
+  color: black;
   background: var(--color-sun);
   box-shadow: none;
 }
