@@ -174,7 +174,7 @@ const Game = () => {
       character: [getDiceFace(), getDiceFace()],
     };
 
-    dispatch({type: 'attack', payload: { attack }});
+    dispatch({ type: 'attack', payload: { attack } });
   };
 
 
@@ -210,9 +210,11 @@ const Game = () => {
     {renderWinner(state)}
     <div className='c-game__actions'>{renderAttackButton()}</div>
     <section ref={bFightersRef} className='b-fighters'>
-      {renderFighter('character')}
-      <DrawWithAnimation hasGameStarted={hasGameStarted(state)} isDraw={isAttackDraw(state)} />
-      {renderFighter('monster')}
+      <div className='b-fighters__subwrapper'>
+        {renderFighter('character')}
+        <DrawWithAnimation hasGameStarted={hasGameStarted(state)} isDraw={isAttackDraw(state)} />
+        {renderFighter('monster')}
+      </div>
     </section>
   </section>
 };

@@ -11,12 +11,23 @@
 }
 
 .b-fighters {
-  display: grid;
+  /* display: grid;
   grid-template-columns: 200px 1fr 200px;
   grid-gap: 1rem;
   padding: 2rem;
   max-width: 960px;
-  margin-top: 110px;
+  margin-top: 110px; */
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  height: 100%;
+}
+
+.b-fighters__subwrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+  min-width: 500px;
 }
 
 .b-fighters--blur {

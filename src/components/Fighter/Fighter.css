@@ -1,6 +1,7 @@
 .c-fighter {
   background-color: #f6f656;
   border: 1px solid black;
+  height: 210px;
 }
 
 .dmg-taken {
