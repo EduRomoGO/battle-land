@@ -164,7 +164,7 @@ const Game = () => {
   };
 
   const renderFighter = type => {
-    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} />;
+    return <Fighter className={`c-fighter-${type}`} type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} />;
   };
 
   const resetGameStatus = () => {

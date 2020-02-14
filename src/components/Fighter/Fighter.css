@@ -8,6 +8,7 @@
   font-weight: bold;
   color: red;
   min-height: 30px;
+  opacity: 0;
 }
 
 .c-fighter__attributes {

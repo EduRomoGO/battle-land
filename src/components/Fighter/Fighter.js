@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Dice from '../Dice/Dice';
 import './Fighter.css';
 import { ReactComponent as HealthSvg } from './Health.svg';
+import anime from 'animejs/lib/anime.es.js';
 
 const getAvatar = type => type === 'monster' ? '🧟‍♂️' : '🧙‍♂️';
 
@@ -37,8 +38,31 @@ const getSvgStyle = (initialHealth, currentHealth) => {
   };
 };
 
-const Fighter = ({ type, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position }) => {
-  return <section className={`c-fighter c-fighter-${type} component-wrapper`}>
+const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position }) => {
+  useEffect(() => {
+    const animateDmg = () => {
+      anime.timeline()
+        .add({
+          targets: '.dmg-taken',
+          duration: 600,
+          opacity: [0, 1],
+          translateY: [30, 0],
+        }, 1800)
+        .add({
+          targets: '.dmg-taken',
+          duration: 600,
+          opacity: [1, 0],
+          translateY: [0, -30],
+        });
+    };
+
+    if (dmg > 0) {
+      animateDmg();
+    }
+
+  }, [dmg]);
+
+  return <section className={`c-fighter ${className} component-wrapper`}>
     <div className='dmg-taken'>{getDmgTaken(dmg)}</div>
     <div className={getClassName(position)}>
       <div className='c-fighter__health-avatar-wrapper'>
