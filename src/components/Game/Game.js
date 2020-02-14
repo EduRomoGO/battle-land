@@ -61,7 +61,7 @@ const Game = () => {
   };
 
   const renderFighter = type => {
-    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} />;
+    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} />;
   };
 
   return <section className='c-game'>

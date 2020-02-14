@@ -2,3 +2,10 @@
   background-color: red;
   border: 1px solid black;
 }
+
+.dmg-taken {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: red;
+  min-height: 30px;
+}
