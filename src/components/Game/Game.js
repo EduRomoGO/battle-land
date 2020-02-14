@@ -34,6 +34,8 @@ const isAttackDraw = ({ monster, character }) => getAttackPoints(monster) === ge
 
 const getDamageFor = (state, fighter) => getDmgResults(state)[fighter];
 
+const getInitialHealth = (state, type) => initialState[type].health;
+
 const Game = () => {
   const [state, setState] = useState(initialState);
 
@@ -62,7 +64,7 @@ const Game = () => {
 
   const getPosition = type => type === 'character' ? 'left' : 'right';
   const renderFighter = type => {
-    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getPosition(type)} />;
+    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getPosition(type)} initialHealth={getInitialHealth(state, type)} />;
   };
 
   return <section className='c-game'>

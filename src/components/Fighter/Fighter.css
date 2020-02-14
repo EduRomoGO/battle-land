@@ -24,16 +24,35 @@
 }
 
 .c-fighter__health-avatar-wrapper {
-  /* position: relative; */
   min-width: 125px;
+  position: relative;
 }
 
 .c-fighter__avatar {
   font-size: 60px;
-  /* position: absolute;
-  top: 36px;
-  left: 27px; */
 }
+
+
+.c-fighter-health-svg {
+  height: 120px;
+  width: 120px;
+  position: absolute;
+  left: 1px;
+}
+
+.progress-ring__circle {
+  transition: 0.35s stroke-dashoffset;
+  stroke: red;
+  stroke-width: 4;
+  fill: transparent;
+  r: 52;
+  cx: 60;
+  cy: 60;
+/* axis compensation */
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
 
 
 .c-fighter__dice-wrapper {
