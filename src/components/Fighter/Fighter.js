@@ -41,6 +41,8 @@ const getHealthSvgStyle = (initialHealth, currentHealth) => {
 
 const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position, animationDelay }) => {
   useEffect(() => {
+    const healthRefCurrent = healthRef.current;
+
     const animateDmg = () => {
       anime.timeline()
         .add({
@@ -57,8 +59,8 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
           begin: () => {
             const healthStyle = getHealthSvgStyle(initialHealth, currentHealth);
 
-            healthRef.current.style.strokeDasharray = healthStyle.strokeDasharray;
-            healthRef.current.style.strokeDashoffset = healthStyle.strokeDashoffset;
+            healthRefCurrent.style.strokeDasharray = healthStyle.strokeDasharray;
+            healthRefCurrent.style.strokeDashoffset = healthStyle.strokeDashoffset;
           },
         });
     };
@@ -67,6 +69,12 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
       animateDmg();
     }
 
+    if (!hasGameStarted) {
+      const healthStyle = getHealthSvgStyle(initialHealth, currentHealth);
+
+      healthRefCurrent.style.strokeDasharray = healthStyle.strokeDasharray;
+      healthRefCurrent.style.strokeDashoffset = healthStyle.strokeDashoffset;
+    }
   });
   const healthRef = useRef();
 
