@@ -1,5 +1,5 @@
 .c-fighter {
-  background-color: red;
+  background-color: #f6f656;
   border: 1px solid black;
 }
 
@@ -8,4 +8,17 @@
   font-weight: bold;
   color: red;
   min-height: 30px;
+}
+
+.c-fighter__attributes {
+  border: 1px solid black;
+  display: flex;
+}
+
+.c-fighter__attributes__left {
+  flex-direction: row;
+}
+
+.c-fighter__attributes__right {
+  flex-direction: row-reverse;
 }

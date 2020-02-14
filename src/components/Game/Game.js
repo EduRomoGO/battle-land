@@ -60,8 +60,9 @@ const Game = () => {
     return <button className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
   };
 
+  const getPosition = type => type === 'character' ? 'left' : 'right';
   const renderFighter = type => {
-    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} />;
+    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getPosition(type)} />;
   };
 
   return <section className='c-game'>
