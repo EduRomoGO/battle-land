@@ -18,3 +18,33 @@
   max-width: 960px;
   margin-top: 110px;
 }
+
+.b-fighters--blur {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+}
+
+.b-winner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  align-items: center;
+  z-index: 1;
+}
+
+.b-winner__msg {
+  margin-top: 210px;
+  font-weight: bold;
+}
+
+.b-winner__play-again {
+  flex-basis: auto;
+}
+
+.hidden {
+  display: none;
+}

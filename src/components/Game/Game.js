@@ -4,7 +4,7 @@ import { DrawWithAnimation } from '../Draw/Draw.js';
 import './Game.css';
 import anime from 'animejs/lib/anime.es.js';
 
-const initialHealth = 12;
+const initialHealth = 1;
 const initialState = {
   monster: { health: initialHealth, attack: undefined },
   character: { health: initialHealth, attack: undefined },
