@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
-import Dice from '../Dice/Dice';
+import React, { useEffect } from 'react';
+import DiceWithAnimations from '../Dice/DiceWithAnimations.js';
 import './Fighter.css';
 import { ReactComponent as HealthSvg } from './Health.svg';
 import anime from 'animejs/lib/anime.es.js';
+import { AnimateOnChange } from 'react-animation';
 
 const getAvatar = type => type === 'monster' ? '🧟‍♂️' : '🧙‍♂️';
 
@@ -69,10 +70,12 @@ const Fighter = ({ type, className, initialHealth, currentHealth, dmg, attack = 
         <HealthSvg style={getSvgStyle(initialHealth, currentHealth)} className='c-fighter-health-svg' tabIndex='0' />
         <div className='c-fighter__avatar'>{getAvatar(type)}</div>
       </div>
-      <div className='c-fighter__dice-wrapper'>
-        {attack.map((result, id) => <Dice key={id} value={result} />)}
+      <div className='c-fighter__die-wrapper'>
+        {attack.map((result, id) => <DiceWithAnimations key={id} value={result} />)}
       </div>
-      <div className='c-fighter__total-attack'>{getTotalAttackValue(hasGameStarted, attack)}</div>
+      <AnimateOnChange style={{ display: 'flex' }} durationOut={500}>
+        <div className='c-fighter__total-attack'>{getTotalAttackValue(hasGameStarted, attack)}</div>
+      </AnimateOnChange>
     </div>
   </section>;
 };

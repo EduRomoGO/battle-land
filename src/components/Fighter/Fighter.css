@@ -56,7 +56,7 @@
 
 
 
-.c-fighter__dice-wrapper {
+.c-fighter__die-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
