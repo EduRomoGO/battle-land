@@ -28,13 +28,18 @@ const getDmgResults = ({ monster, character }) => {
   };
 };
 
+const hasGameFinished = ({monster, character}) => !monster.health || !character.health;
 const hasGameStarted = ({monster, character}) => monster.attack && character.attack;
 
 const isAttackDraw = ({ monster, character }) => getAttackPoints(monster) === getAttackPoints(character);
 
 const getDamageFor = (state, fighter) => getDmgResults(state)[fighter];
 
-const getInitialHealth = (state, type) => initialState[type].health;
+const getInitialHealth = (type) => initialState[type].health;
+
+const determineWinner = ({ monster }) => !monster.health ? 'character' : 'monster';
+
+
 
 const Game = () => {
   const [state, setState] = useState(initialState);
@@ -62,12 +67,33 @@ const Game = () => {
     return <button className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
   };
 
-  const getPosition = type => type === 'character' ? 'left' : 'right';
+  const getFighterPosition = type => type === 'character' ? 'left' : 'right';
   const renderFighter = type => {
-    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getPosition(type)} initialHealth={getInitialHealth(state, type)} />;
+    return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} />;
+  };
+
+  const resetGameStatus = () => {
+    setState(initialState);
+  };
+
+  const handlePlayAgainClick = () => {
+    resetGameStatus();
+  };
+
+  const renderWinner = (state) => {
+    if (hasGameFinished(state)) {
+      const winner = determineWinner(state);
+      const msg = (winner === 'monster') ? 'Game Over' : 'Victory!!';
+
+      return <section className='b-winner'>
+        <div className='b-winner__msg'>{msg}</div>
+        <button className='b-winner__play-again button button--sun button--big-font' onClick={handlePlayAgainClick}>Play Again</button>
+      </section>;
+    }
   };
 
   return <section className='c-game'>
+    {renderWinner(state)}
     <div className='c-game__actions'>{renderAttackButton()}</div>
     <section className='b-fighters'>
       {renderFighter('character')}
