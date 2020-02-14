@@ -57,7 +57,6 @@ const Game = () => {
     if (!isAttackDraw(state)) {
       const attacker = determineAttacker(state);
       const attackerClass = `.c-fighter-${attacker}`;
-      const attackerNode = document.querySelector(attackerClass);
 
       const getDistanceFromSide = ({left: nodeLeft, right: nodeRight, movingNodePosition}) => {
         let distance;
@@ -72,31 +71,18 @@ const Game = () => {
       }
 
       const animateAttacker = attacker => {
-
-        // const fighterInfoMap = {
-        //   monster: {
-        //     node: document.querySelector('.c-fighter-monster'),
-        //     position: getFighterPosition('monster'),
-        //   },
-        //   character: {
-        //     node: document.querySelector('.c-fighter-character'),
-        //     position: getFighterPosition('character'),
-        //   },
-        // };
-
         const positionNodeMap = {
           [getFighterPosition('character')] : document.querySelector('.c-fighter-character'),
           [getFighterPosition('monster')] : document.querySelector('.c-fighter-monster'),
         }
 
-
         const distance = getDistanceFromSide({...positionNodeMap, movingNodePosition: getFighterPosition(attacker)});
 
-        const getAttackMovementValues = () => {
-          return attacker === 'monster' ? [0, -distance] : [0, distance];
+        const getAttackMovementValues = (position) => {
+          return position === 'right' ? [0, -distance] : [0, distance];
         };
-        const getRetreatMovementValues = () => {
-          return attacker === 'monster' ? [-distance, 0] : [distance, 0];
+        const getRetreatMovementValues = (position) => {
+          return position === 'right' ? [-distance, 0] : [distance, 0];
         };
 
         if (attackButtonRefCurrent) {
@@ -106,14 +92,14 @@ const Game = () => {
         return anime.timeline()
           .add({
             targets: attackerClass,
-            translateX: getAttackMovementValues(),
+            translateX: getAttackMovementValues(getFighterPosition(attacker)),
             opacity: 1,
             duration: 500,
             // elasticity: 100,
           }, 1800)
           .add({
             targets: attackerClass,
-            translateX: getRetreatMovementValues(),
+            translateX: getRetreatMovementValues(getFighterPosition(attacker)),
             opacity: 1,
             duration: 500,
             complete: () => {
