@@ -1,5 +1,7 @@
 # Battle Land
 
-To try it, clone the project and then run:
-`npm i`
-`npm start`
+## Usage instructions 
+
+Clone the repo --> `git clone https://github.com/EduRomoGO/battle-land.git`  
+Install the dependencies --> `npm i`  
+Start the local server --> `npm start`  
