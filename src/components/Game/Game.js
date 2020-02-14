@@ -1,14 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef } from 'react';
 import Fighter from '../Fighter/Fighter.js';
 import { DrawWithAnimation } from '../Draw/Draw.js';
 import './Game.css';
 import anime from 'animejs/lib/anime.es.js';
-
-const initialHealth = 12;
-const initialState = {
-  monster: { health: initialHealth, attack: undefined },
-  character: { health: initialHealth, attack: undefined },
-};
 
 // const dice = [1];
 const dice = [1, 2, 3, 4, 5, 6];
@@ -47,8 +41,38 @@ const getFighterPosition = type => type === 'character' ? 'left' : 'right';
 
 const animationDelay = 1800;
 
+
+const initialHealth = 12;
+const initialState = {
+  monster: { health: initialHealth, attack: undefined },
+  character: { health: initialHealth, attack: undefined },
+};
+
+const reducer = (state, action) => {
+  const actionsMap = {
+    resetState: () => initialState,
+    attack: () => {
+      const newState = {
+        monster: { attack: action.payload.attack.monster },
+        character: { attack: action.payload.attack.character },
+      };
+      const dmgResults = getDmgResults(newState);
+
+      newState.character.health = Math.max(state.character.health - dmgResults.character, 0);
+      newState.monster.health = Math.max(state.monster.health - dmgResults.monster, 0);
+
+      return newState;
+    },
+  };
+  const throwError = () => { throw new Error() };
+
+  return actionsMap[action.type] ? actionsMap[action.type]() : throwError();
+};
+
+
+
 const Game = () => {
-  const [state, setState] = useState(initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const bFightersRef = useRef(null);
   const attackButtonRef = useRef(null);
   useEffect(() => {
@@ -59,7 +83,7 @@ const Game = () => {
       const attacker = determineAttacker(state);
       const attackerClass = `.c-fighter-${attacker}`;
 
-      const getDistanceFromSide = ({left: nodeLeft, right: nodeRight, movingNodePosition}) => {
+      const getDistanceFromSide = ({ left: nodeLeft, right: nodeRight, movingNodePosition }) => {
         let distance;
 
         if (movingNodePosition === 'right') {
@@ -73,11 +97,11 @@ const Game = () => {
 
       const animateAttacker = attacker => {
         const positionNodeMap = {
-          [getFighterPosition('character')] : document.querySelector('.c-fighter-character'),
-          [getFighterPosition('monster')] : document.querySelector('.c-fighter-monster'),
+          [getFighterPosition('character')]: document.querySelector('.c-fighter-character'),
+          [getFighterPosition('monster')]: document.querySelector('.c-fighter-monster'),
         }
 
-        const distance = getDistanceFromSide({...positionNodeMap, movingNodePosition: getFighterPosition(attacker)});
+        const distance = getDistanceFromSide({ ...positionNodeMap, movingNodePosition: getFighterPosition(attacker) });
 
         const getAttackMovementValues = (position) => {
           return position === 'right' ? [0, -distance] : [0, distance];
@@ -145,18 +169,12 @@ const Game = () => {
   });
 
   const handleAttackClick = () => {
-    setState(state => {
-      const newState = {
-        monster: { attack: [getDiceFace(), getDiceFace()] },
-        character: { attack: [getDiceFace(), getDiceFace()] },
-      };
-      const dmgResults = getDmgResults(newState);
+    const attack = {
+      monster: [getDiceFace(), getDiceFace()],
+      character: [getDiceFace(), getDiceFace()],
+    };
 
-      newState.character.health = Math.max(state.character.health - dmgResults.character, 0);
-      newState.monster.health = Math.max(state.monster.health - dmgResults.monster, 0);
-
-      return newState;
-    });
+    dispatch({type: 'attack', payload: { attack }});
   };
 
 
@@ -169,7 +187,7 @@ const Game = () => {
   };
 
   const resetGameStatus = () => {
-    setState(initialState);
+    dispatch({ type: 'resetState' });
   };
 
   const handlePlayAgainClick = () => {
