@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Fighter from '../Fighter/Fighter.js';
-import {Draw} from '../Draw/Draw.js';
+import { DrawWithAnimation } from '../Draw/Draw.js';
 import './Game.css';
 
 const initialHealth = 12;
@@ -9,7 +9,9 @@ const initialState = {
   character: { health: initialHealth, attack: undefined },
 };
 
-const dice = [1, 2, 3, 4, 5, 6];
+const drawDice = [1];
+const dice = drawDice;
+// const dice = [1, 2, 3, 4, 5, 6];
 const getDiceFace = () => Math.floor(Math.random() * dice.length) + 1;
 
 const getCurrentHealth = (state, type) => state[type].health;
@@ -26,6 +28,10 @@ function getDmgResults({ monster, character }) {
     character: Math.max(monsterAttack - characterAttack, 0),
   };
 };
+
+const hasGameStarted = ({monster, character}) => monster.attack && character.attack;
+
+const isAttackDraw = ({ monster, character }) => getAttackPoints(monster) === getAttackPoints(character);
 
 
 const Game = () => {
@@ -58,7 +64,7 @@ const Game = () => {
     <div className='c-game__actions'>{renderAttackButton()}</div>
     <section className='b-fighters'>
       <Fighter type='character' currentHealth={getCurrentHealth(state, 'character')} attack={getAttack(state, 'character')} />
-      <Draw isDraw={true} />
+      <DrawWithAnimation hasGameStarted={hasGameStarted(state)} isDraw={isAttackDraw(state)} />
       <Fighter type='monster' currentHealth={getCurrentHealth(state, 'monster')} attack={getAttack(state, 'monster')} />
     </section>
   </section>
