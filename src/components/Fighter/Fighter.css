@@ -13,9 +13,9 @@
 
 .c-fighter__attributes {
   background-color: #f6f656;
-  border: 1px solid black;
+  border: 6px solid black;
   display: flex;
-  height: 100%;
+  border-radius: 5px;
 }
 
 .c-fighter__attributes__left {
@@ -48,8 +48,8 @@
 
 .progress-ring__circle {
   transition: 0.35s stroke-dashoffset;
-  stroke: red;
-  stroke-width: 4;
+  stroke: #11ad11;
+  stroke-width: 14px;
   fill: transparent;
   r: 52;
   cx: 60;
