@@ -22,3 +22,33 @@
 .c-fighter__attributes__right {
   flex-direction: row-reverse;
 }
+
+.c-fighter__health-avatar-wrapper {
+  /* position: relative; */
+  min-width: 125px;
+}
+
+.c-fighter__avatar {
+  font-size: 60px;
+  /* position: absolute;
+  top: 36px;
+  left: 27px; */
+}
+
+
+.c-fighter__dice-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+
+.c-fighter__total-attack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 18px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 20px;
+}
