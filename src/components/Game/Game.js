@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Fighter from '../Fighter/Fighter';
+import './Game.css';
 
 const initialHealth = 12;
 const initialState = {
@@ -48,7 +49,7 @@ const Game = () => {
 
 
   const renderAttackButton = () => {
-    return <button onClick={handleAttackClick}>Attack</button>;
+    return <button className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
   };
 
   return <section className='c-game'>

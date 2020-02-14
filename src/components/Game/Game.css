@@ -1,0 +1,11 @@
+.c-game {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.c-game__actions {
+  display: flex;
+  justify-content: center;
+  min-height: 78px;
+}
