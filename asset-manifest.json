@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/battle-land/static/css/main.8a77eaa3.chunk.css",
+    "main.js": "/battle-land/static/js/main.176ea183.chunk.js",
+    "main.js.map": "/battle-land/static/js/main.176ea183.chunk.js.map",
+    "runtime-main.js": "/battle-land/static/js/runtime-main.1237385c.js",
+    "runtime-main.js.map": "/battle-land/static/js/runtime-main.1237385c.js.map",
+    "static/js/2.65a417da.chunk.js": "/battle-land/static/js/2.65a417da.chunk.js",
+    "static/js/2.65a417da.chunk.js.map": "/battle-land/static/js/2.65a417da.chunk.js.map",
+    "index.html": "/battle-land/index.html",
+    "precache-manifest.aa8ea3af165c064407cfab5f5f1331d8.js": "/battle-land/precache-manifest.aa8ea3af165c064407cfab5f5f1331d8.js",
+    "service-worker.js": "/battle-land/service-worker.js",
+    "static/css/main.8a77eaa3.chunk.css.map": "/battle-land/static/css/main.8a77eaa3.chunk.css.map",
+    "static/js/2.65a417da.chunk.js.LICENSE.txt": "/battle-land/static/js/2.65a417da.chunk.js.LICENSE.txt",
+    "static/media/Health.3fcfe53c.svg": "/battle-land/static/media/Health.3fcfe53c.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1237385c.js",
+    "static/js/2.65a417da.chunk.js",
+    "static/css/main.8a77eaa3.chunk.css",
+    "static/js/main.176ea183.chunk.js"
+  ]
+}
