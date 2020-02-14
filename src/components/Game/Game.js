@@ -42,7 +42,7 @@ const getFighterPosition = type => type === 'character' ? 'left' : 'right';
 const animationDelay = 1800;
 
 
-const initialHealth = 1;
+const initialHealth = 25;
 const initialState = {
   monster: { health: initialHealth, attack: undefined },
   character: { health: initialHealth, attack: undefined },
