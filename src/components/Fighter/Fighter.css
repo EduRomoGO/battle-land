@@ -1,7 +1,6 @@
 .c-fighter {
-  background-color: #f6f656;
-  border: 1px solid black;
-  height: 210px;
+  width: 220px;
+  height: 220px;
 }
 
 .dmg-taken {
@@ -13,8 +12,10 @@
 }
 
 .c-fighter__attributes {
+  background-color: #f6f656;
   border: 1px solid black;
   display: flex;
+  height: 100%;
 }
 
 .c-fighter__attributes__left {
@@ -28,6 +29,9 @@
 .c-fighter__health-avatar-wrapper {
   min-width: 125px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .c-fighter__avatar {
