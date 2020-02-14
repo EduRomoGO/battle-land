@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Fighter from '../Fighter/Fighter.js';
 import { DrawWithAnimation } from '../Draw/Draw.js';
 import './Game.css';
+import anime from 'animejs/lib/anime.es.js';
 
 const initialHealth = 12;
 const initialState = {
@@ -28,8 +29,8 @@ const getDmgResults = ({ monster, character }) => {
   };
 };
 
-const hasGameFinished = ({monster, character}) => !monster.health || !character.health;
-const hasGameStarted = ({monster, character}) => monster.attack && character.attack;
+const hasGameFinished = ({ monster, character }) => !monster.health || !character.health;
+const hasGameStarted = ({ monster, character }) => monster.attack && character.attack;
 
 const isAttackDraw = ({ monster, character }) => getAttackPoints(monster) === getAttackPoints(character);
 
@@ -38,15 +39,111 @@ const getDamageFor = (state, fighter) => getDmgResults(state)[fighter];
 const getInitialHealth = (type) => initialState[type].health;
 
 const determineWinner = ({ monster }) => !monster.health ? 'character' : 'monster';
+const determineAttacker = ({ monster, character }) => {
+  return (getAttackPoints(monster) > getAttackPoints(character)) ? 'monster' : 'character';
+};
 
+const getFighterPosition = type => type === 'character' ? 'left' : 'right';
 
 
 const Game = () => {
   const [state, setState] = useState(initialState);
+  const bFightersRef = useRef(null);
+  const attackButtonRef = useRef(null);
+  useEffect(() => {
+    const bFightersRefCurrent = bFightersRef.current;
+    const attackButtonRefCurrent = attackButtonRef.current;
 
+    if (!isAttackDraw(state)) {
+      const attacker = determineAttacker(state);
+      const attackerClass = `.c-fighter-${attacker}`;
+      const attackerNode = document.querySelector(attackerClass);
+
+      const getDistance = attacker => {
+        let distance;
+        const damaged = attacker === 'monster' ? 'character' : 'monster';
+        const damagedClass = `.c-fighter-${damaged}`;
+        const damagedNode = document.querySelector(damagedClass);
+
+        if (attacker === 'character') {
+          distance = damagedNode.offsetLeft - damagedNode.offsetWidth - attackerNode.offsetLeft;
+        } else {
+          distance = attackerNode.offsetLeft - damagedNode.offsetWidth - damagedNode.offsetLeft;
+        }
+
+        return distance;
+      };
+
+      const animateAttacker = attacker => {
+        const distance = getDistance(attacker);
+
+        const getAttackDirection = () => {
+          return attacker === 'monster' ? [0, -distance] : [0, distance];
+        };
+        const getRetreatDirection = () => {
+          return attacker === 'monster' ? [-distance, 0] : [distance, 0];
+        };
+
+        if (attackButtonRefCurrent) {
+          attackButtonRefCurrent.disabled = true;
+        }
+
+        return anime.timeline()
+          .add({
+            targets: attackerClass,
+            translateX: getAttackDirection(),
+            opacity: 1,
+            duration: 500,
+            // elasticity: 100,
+          }, 1800)
+          .add({
+            targets: attackerClass,
+            translateX: getRetreatDirection(),
+            opacity: 1,
+            duration: 500,
+            complete: () => {
+              if (attackButtonRefCurrent) {
+                attackButtonRefCurrent.disabled = false;
+              }
+            }
+          });
+      };
+
+      if (hasGameFinished(state)) {
+        animateAttacker(attacker)
+          .add({
+            targets: '.b-winner',
+            opacity: [0, 1],
+            begin: () => {
+              attackButtonRefCurrent.classList.add('hidden');
+              bFightersRefCurrent.classList.add('b-fighters--blur');
+            },
+            easing: 'easeInOutQuad',
+          })
+          .add({
+            targets: '.b-winner__msg',
+            opacity: [0, 1],
+            fontSize: ['1rem', '5rem'],
+            easing: 'easeInOutQuad',
+          })
+          .add({
+            targets: '.b-winner__play-again',
+            opacity: [0, 1],
+            easing: 'easeInOutQuad',
+          }, '+=200');
+      } else {
+        animateAttacker(attacker);
+      }
+    }
+
+    return () => {
+      attackButtonRefCurrent.classList.remove('hidden');
+      bFightersRefCurrent.classList.remove('b-fighters--blur');
+    }
+  });
 
   const handleAttackClick = () => {
-    const getNewRound = state => {
+    setState(state => {
       const newState = {
         monster: { attack: [getDiceFace(), getDiceFace()] },
         character: { attack: [getDiceFace(), getDiceFace()] },
@@ -57,17 +154,14 @@ const Game = () => {
       newState.monster.health = Math.max(state.monster.health - dmgResults.monster, 0);
 
       return newState;
-    };
-
-    setState(state => getNewRound(state));
+    });
   };
 
 
   const renderAttackButton = () => {
-    return <button className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
+    return <button ref={attackButtonRef} className='button button--salmon button--big-font' onClick={handleAttackClick}>Attack</button>;
   };
 
-  const getFighterPosition = type => type === 'character' ? 'left' : 'right';
   const renderFighter = type => {
     return <Fighter type={type} currentHealth={getCurrentHealth(state, type)} attack={getAttack(state, type)} dmg={getDamageFor(state, type)} hasGameStarted={hasGameStarted(state)} position={getFighterPosition(type)} initialHealth={getInitialHealth(type)} />;
   };
@@ -95,7 +189,7 @@ const Game = () => {
   return <section className='c-game'>
     {renderWinner(state)}
     <div className='c-game__actions'>{renderAttackButton()}</div>
-    <section className='b-fighters'>
+    <section ref={bFightersRef} className='b-fighters'>
       {renderFighter('character')}
       <DrawWithAnimation hasGameStarted={hasGameStarted(state)} isDraw={isAttackDraw(state)} />
       {renderFighter('monster')}

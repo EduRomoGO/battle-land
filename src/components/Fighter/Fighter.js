@@ -38,7 +38,7 @@ const getSvgStyle = (initialHealth, currentHealth) => {
 };
 
 const Fighter = ({ type, initialHealth, currentHealth, dmg, attack = [undefined, undefined], hasGameStarted, position }) => {
-  return <section className='c-fighter component-wrapper'>
+  return <section className={`c-fighter c-fighter-${type} component-wrapper`}>
     <div className='dmg-taken'>{getDmgTaken(dmg)}</div>
     <div className={getClassName(position)}>
       <div className='c-fighter__health-avatar-wrapper'>
