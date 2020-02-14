@@ -10,7 +10,8 @@ const initialState = {
 const dice = [1, 2, 3, 4, 5, 6];
 const getDiceFace = () => Math.floor(Math.random() * dice.length) + 1;
 
-const getCurrentHealth = (type, state) => state[type].health;
+const getCurrentHealth = (state, type) => state[type].health;
+const getAttack = (state, type) => state[type].attack;
 
 const getAttackPoints = fighter => fighter.attack && fighter.attack.reduce((acc, next) => acc + next, 0);
 
@@ -52,8 +53,8 @@ const Game = () => {
 
   return <section className='c-game'>
     <div className='c-game__actions'>{renderAttackButton()}</div>
-    <Fighter type='character' currentHealth={getCurrentHealth('character', state)} />
-    <Fighter type='monster' currentHealth={getCurrentHealth('monster', state)} />
+    <Fighter type='character' currentHealth={getCurrentHealth(state, 'character')} attack={getAttack(state, 'character')}/>
+    <Fighter type='monster' currentHealth={getCurrentHealth(state, 'monster')} attack={getAttack(state, 'monster')}/>
   </section>
 };
 
