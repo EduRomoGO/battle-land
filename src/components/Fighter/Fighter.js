@@ -16,21 +16,11 @@ const getHealthSvgStyle = (initialHealth, currentHealth) => {
   const radius = 52;
   const circumference = radius * 2 * Math.PI;
 
-  const missingHealth = initialHealth - currentHealth;
   const getStrokeDashoffset = () => {
-    let strokeDashoffset;
+    const missingHealthPerc = (currentHealth / initialHealth);
+    const currentHealthPerc = 1 - missingHealthPerc;
 
-    if (currentHealth === 0) {
-      strokeDashoffset = circumference;
-    } else if (missingHealth === 0) {
-      strokeDashoffset = 0;
-    } else {
-      const currentHealthPerc = (currentHealth / initialHealth) * 100;
-
-      strokeDashoffset = circumference - (currentHealthPerc / 100) * circumference;
-    }
-
-    return strokeDashoffset;
+    return circumference * currentHealthPerc;
   }
 
   return {
